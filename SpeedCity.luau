@@ -410,6 +410,10 @@ do
         "Cloud Crate",
         "Ocean Crate",
         "Best Crate"
+        "very op crate",
+	    "not free crate",
+	    "H4110w33n",
+	    "Christmas Present"
     }
 
     for i, crateName in ipairs(crates) do
