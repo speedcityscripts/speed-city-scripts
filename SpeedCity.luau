@@ -409,7 +409,7 @@ do
         "Beach Crate",
         "Cloud Crate",
         "Ocean Crate",
-        "Best Crate"
+        "Best Crate",
         "very op crate",
 	    "not free crate",
 	    "H4110w33n",
