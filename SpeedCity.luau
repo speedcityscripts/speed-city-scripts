@@ -462,7 +462,7 @@ do
     local page = UI.pages["GameChanges"]
     addLabel(page, " ")
 
-    -- Music button
+    
     local music = ReplicatedFirst:FindFirstChild("Music")
     if music then
         music.SoundId = "rbxassetid://1848354536"
@@ -485,7 +485,7 @@ do
 
     local dayBtn = addButton(page, "Day/Night", function()
         if Lighting.TimeOfDay == "15:00:00" then
-            -- Switch to night
+            
             Lighting.TimeOfDay = "00:00:00"
             Lighting.Brightness = 1.2
             Lighting.OutdoorAmbient = Color3.fromRGB(50,50,70)
@@ -493,7 +493,7 @@ do
             if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
             dayBtn.Text = "Day"
         else
-            -- Switch to day
+            
             Lighting.TimeOfDay = "15:00:00"
             Lighting.Brightness = 2
             Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
