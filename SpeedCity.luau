@@ -45,8 +45,8 @@ local function getHRP(timeout)
 end
 
 
-local FarmFlags = {}
-local FarmRunners = {}
+local FarmFlags = {}      
+local FarmRunners = {}    
 
 local function startFarm(name, getPositionFunc)
     FarmFlags[name] = true
@@ -245,10 +245,15 @@ do
     addButton(btnGrid, "Accept", function() safeFire("TradeMenuAccept") end)
     addButton(btnGrid, "Cancel", function() safeFire("TradeMenuCancel") end)
 
-    -- Добавленная кнопка Scam Accept
+
     addButton(page, "Scam Accept", function()
         game:GetService("ReplicatedStorage"):WaitForChild("TradeMenuAccept"):FireServer()
         game:GetService("ReplicatedStorage"):WaitForChild("TradeAccept"):FireServer()
+    end)
+
+ 
+    addButton(page, "Freeze", function()
+        safeFire("TradeDecline")
     end)
 
     addButton(page, "Trade Lock", function()
@@ -366,29 +371,118 @@ do
     local trailsList = createInstance("ScrollingFrame", {Parent = viewer, Size = UDim2.new(1,-220,1,-20), Position = UDim2.new(0,200,0,10), BackgroundTransparency = 1, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y})
     createInstance("UIListLayout", {Parent = trailsList}).Padding = UDim.new(0,4)
 
+    local currentPlayer = nil
+    local trailConnections = {}
+
+    local function clearTrailConnections()
+        for _, conn in pairs(trailConnections) do
+            conn:Disconnect()
+        end
+        trailConnections = {}
+    end
+
+    local function updateTrailsList(pl)
+        
+        clearTrailConnections()
+        
+        
+        for _, c in ipairs(trailsList:GetChildren()) do 
+            if c:IsA("TextLabel") then c:Destroy() end 
+        end
+
+        local trails = pl and pl:FindFirstChild("trails")
+        if trails then
+            
+            local function refreshTrailsDisplay()
+                for _, c in ipairs(trailsList:GetChildren()) do 
+                    if c:IsA("TextLabel") then c:Destroy() end 
+                end
+                
+                for _, it in ipairs(trails:GetChildren()) do
+                    local trailLabel = createInstance("TextLabel", {
+                        Parent = trailsList, 
+                        Size = UDim2.new(1,-8,0,20), 
+                        Text = it.Name, 
+                        BackgroundColor3 = Color3.fromRGB(45,45,45), 
+                        TextColor3 = Color3.fromRGB(230,230,230), 
+                        Font = Enum.Font.Gotham, 
+                        TextSize = 13, 
+                        TextXAlignment = Enum.TextXAlignment.Left
+                    })
+                end
+                
+                if #trails:GetChildren() == 0 then
+                    createInstance("TextLabel", {
+                        Parent = trailsList, 
+                        Size = UDim2.new(1,-8,0,20), 
+                        Text = "No trails", 
+                        BackgroundColor3 = Color3.fromRGB(45,45,45), 
+                        TextColor3 = Color3.fromRGB(200,200,200), 
+                        Font = Enum.Font.Gotham, 
+                        TextSize = 13
+                    })
+                end
+            end
+
+            
+            refreshTrailsDisplay()
+
+            
+            table.insert(trailConnections, trails.ChildAdded:Connect(function(child)
+                refreshTrailsDisplay()
+            end))
+            
+            table.insert(trailConnections, trails.ChildRemoved:Connect(function(child)
+                refreshTrailsDisplay()
+            end))
+        else
+            createInstance("TextLabel", {
+                Parent = trailsList, 
+                Size = UDim2.new(1,-8,0,20), 
+                Text = "No trails folder", 
+                BackgroundColor3 = Color3.fromRGB(45,45,45), 
+                TextColor3 = Color3.fromRGB(200,200,200), 
+                Font = Enum.Font.Gotham, 
+                TextSize = 13
+            })
+        end
+    end
+
     local function renderPlayers()
         for _, c in ipairs(playersList:GetChildren()) do
             if c:IsA("TextButton") then c:Destroy() end
         end
+        
         for _, pl in ipairs(Players:GetPlayers()) do
-            local btn = createInstance("TextButton", {Parent = playersList, Size = UDim2.new(1,-8,0,26), Text = pl.Name, BackgroundColor3 = Color3.fromRGB(50,50,50), TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 14})
+            local btn = createInstance("TextButton", {
+                Parent = playersList, 
+                Size = UDim2.new(1,-8,0,26), 
+                Text = pl.Name, 
+                BackgroundColor3 = Color3.fromRGB(50,50,50), 
+                TextColor3 = Color3.fromRGB(230,230,230), 
+                Font = Enum.Font.Gotham, 
+                TextSize = 14
+            })
+            
             btn.MouseButton1Click:Connect(function()
-                for _, c in ipairs(trailsList:GetChildren()) do if c:IsA("TextLabel") then c:Destroy() end end
-                local trails = pl:FindFirstChild("trails")
-                if trails then
-                    for _, it in ipairs(trails:GetChildren()) do
-                        createInstance("TextLabel", {Parent = trailsList, Size = UDim2.new(1,-8,0,20), Text = it.Name, BackgroundColor3 = Color3.fromRGB(45,45,45), TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left})
-                    end
-                else
-                    createInstance("TextLabel", {Parent = trailsList, Size = UDim2.new(1,-8,0,20), Text = "No trails folder", BackgroundColor3 = Color3.fromRGB(45,45,45), TextColor3 = Color3.fromRGB(200,200,200), Font = Enum.Font.Gotham, TextSize = 13})
-                end
+                currentPlayer = pl
+                updateTrailsList(pl)
             end)
         end
     end
 
     renderPlayers()
     Players.PlayerAdded:Connect(renderPlayers)
-    Players.PlayerRemoving:Connect(renderPlayers)
+    Players.PlayerRemoving:Connect(function(pl)
+        if pl == currentPlayer then
+            currentPlayer = nil
+            clearTrailConnections()
+            for _, c in ipairs(trailsList:GetChildren()) do 
+                if c:IsA("TextLabel") then c:Destroy() end 
+            end
+        end
+        renderPlayers()
+    end)
 
     UIS.InputBegan:Connect(function(input, gpe)
         if gpe then return end
@@ -493,7 +587,7 @@ do
             if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
             dayBtn.Text = "Day"
         else
-            
+           
             Lighting.TimeOfDay = "15:00:00"
             Lighting.Brightness = 2
             Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
