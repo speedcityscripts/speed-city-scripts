@@ -4,6 +4,8 @@ local Workspace = game:GetService("Workspace")
 local UIS = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local ReplicatedFirst = game:GetService("ReplicatedFirst")
 
 
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
@@ -97,7 +99,7 @@ do
     UI.pages = {}
 
 
-    local tabNames = {"Farms", "TradeTools", "TradeSpy", "InventoryViewer", "Crates", "Maps"}
+    local tabNames = {"Farms", "TradeTools", "TradeSpy", "InventoryViewer", "Crates", "Maps", "GameChanges"}
     for i = 1, #tabNames do
         local name = tabNames[i]
         local btn = createInstance("TextButton", {Parent = tabsFrame, Size = UDim2.new(1, -12, 0, 40), Position = UDim2.new(0,6,0,8 + (i-1)*46), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = name, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 14})
@@ -243,6 +245,11 @@ do
     addButton(btnGrid, "Accept", function() safeFire("TradeMenuAccept") end)
     addButton(btnGrid, "Cancel", function() safeFire("TradeMenuCancel") end)
 
+    -- Добавленная кнопка Scam Accept
+    addButton(page, "Scam Accept", function()
+        game:GetService("ReplicatedStorage"):WaitForChild("TradeMenuAccept"):FireServer()
+        game:GetService("ReplicatedStorage"):WaitForChild("TradeAccept"):FireServer()
+    end)
 
     addButton(page, "Trade Lock", function()
         local rs = game.ReplicatedStorage
@@ -254,7 +261,6 @@ do
         textBox.Text = ""
     end)
 end
-
 
 do
     local page = UI.pages["TradeSpy"]
@@ -450,6 +456,65 @@ do
             end
         end)
     end
+end
+
+do
+    local page = UI.pages["GameChanges"]
+    addLabel(page, " ")
+
+    -- Music button
+    local music = ReplicatedFirst:FindFirstChild("Music")
+    if music then
+        music.SoundId = "rbxassetid://1848354536"
+        music.Volume = 0.5
+        music.Looped = true
+        music:Stop()
+    end
+
+    local musicBtn = addButton(page, "On/Off Music", function()
+        if music then
+            if music.Playing then
+                music:Stop()
+                musicBtn.Text = "Play Music"
+            else
+                music:Play()
+                musicBtn.Text = "Stop Music"
+            end
+        end
+    end)
+
+    local dayBtn = addButton(page, "Day/Night", function()
+        if Lighting.TimeOfDay == "15:00:00" then
+            -- Switch to night
+            Lighting.TimeOfDay = "00:00:00"
+            Lighting.Brightness = 1.2
+            Lighting.OutdoorAmbient = Color3.fromRGB(50,50,70)
+            if Lighting:FindFirstChild("DayBloom") then Lighting.DayBloom:Destroy() end
+            if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
+            dayBtn.Text = "Day"
+        else
+            -- Switch to day
+            Lighting.TimeOfDay = "15:00:00"
+            Lighting.Brightness = 2
+            Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
+            if not Lighting:FindFirstChild("DayBloom") then
+                local bloom = Instance.new("BloomEffect")
+                bloom.Name = "DayBloom"
+                bloom.Intensity = 0.25
+                bloom.Size = 25
+                bloom.Threshold = 0.8
+                bloom.Parent = Lighting
+            end
+            if not Lighting:FindFirstChild("DaySunRays") then
+                local sunRays = Instance.new("SunRaysEffect")
+                sunRays.Name = "DaySunRays"
+                sunRays.Intensity = 0.15
+                sunRays.Spread = 0.75
+                sunRays.Parent = Lighting
+            end
+            dayBtn.Text = "Night"
+        end
+    end)
 end
 
 do
