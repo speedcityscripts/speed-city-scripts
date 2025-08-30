@@ -45,8 +45,8 @@ local function getHRP(timeout)
 end
 
 
-local FarmFlags = {}      -- name -> boolean
-local FarmRunners = {}    -- name -> thread (task)
+local FarmFlags = {}
+local FarmRunners = {}
 
 local function startFarm(name, getPositionFunc)
     FarmFlags[name] = true
