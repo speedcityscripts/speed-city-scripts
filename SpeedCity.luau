@@ -81,19 +81,23 @@ end
 
 local UI = {}
 do
+    -- Уменьшенный размер основного окна
     local screenGui = createInstance("ScreenGui", {Parent = PlayerGui, Name = "SpeedCity", ResetOnSpawn = false})
     UI.screenGui = screenGui
 
-    local mainFrame = createInstance("Frame", {Parent = screenGui, Size = UDim2.new(0, 560, 0, 440), Position = UDim2.new(1, -580, 1, -460), BackgroundColor3 = Color3.fromRGB(24,24,24), BorderSizePixel = 0, Active = true, Draggable = true})
-    createInstance("UICorner", {Parent = mainFrame, CornerRadius = UDim.new(0,8)})
+    -- Уменьшено с 560x440 до 400x300
+    local mainFrame = createInstance("Frame", {Parent = screenGui, Size = UDim2.new(0, 400, 0, 300), Position = UDim2.new(1, -420, 1, -320), BackgroundColor3 = Color3.fromRGB(24,24,24), BorderSizePixel = 0, Active = true, Draggable = true})
+    createInstance("UICorner", {Parent = mainFrame, CornerRadius = UDim.new(0,6)})
     UI.mainFrame = mainFrame
 
-    createInstance("TextLabel", {Parent = mainFrame, Size = UDim2.new(1,0,0,36), Position = UDim2.new(0,0,0,0), BackgroundColor3 = Color3.fromRGB(30,30,30), Text = "Speed City", TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.GothamBold, TextSize = 20})
+    -- Уменьшен заголовок
+    createInstance("TextLabel", {Parent = mainFrame, Size = UDim2.new(1,0,0,28), Position = UDim2.new(0,0,0,0), BackgroundColor3 = Color3.fromRGB(30,30,30), Text = "Speed City", TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.GothamBold, TextSize = 16})
 
-    local tabsFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(0,160,1,-36), Position = UDim2.new(0,0,0,36), BackgroundColor3 = Color3.fromRGB(28,28,28)})
-    createInstance("UICorner", {Parent = tabsFrame, CornerRadius = UDim.new(0,6)})
-    local contentFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(1,-170,1,-46), Position = UDim2.new(0,170,0,40), BackgroundColor3 = Color3.fromRGB(20,20,20)})
-    createInstance("UICorner", {Parent = contentFrame, CornerRadius = UDim.new(0,6)})
+    -- Уменьшена панель вкладок
+    local tabsFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(0,120,1,-28), Position = UDim2.new(0,0,0,28), BackgroundColor3 = Color3.fromRGB(28,28,28)})
+    createInstance("UICorner", {Parent = tabsFrame, CornerRadius = UDim.new(0,4)})
+    local contentFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(1,-130,1,-38), Position = UDim2.new(0,130,0,30), BackgroundColor3 = Color3.fromRGB(20,20,20)})
+    createInstance("UICorner", {Parent = contentFrame, CornerRadius = UDim.new(0,4)})
 
     UI.tabs = {}
     UI.pages = {}
@@ -102,12 +106,13 @@ do
     local tabNames = {"Farms", "TradeTools", "TradeSpy", "InventoryViewer", "Crates", "Maps", "GameChanges"}
     for i = 1, #tabNames do
         local name = tabNames[i]
-        local btn = createInstance("TextButton", {Parent = tabsFrame, Size = UDim2.new(1, -12, 0, 40), Position = UDim2.new(0,6,0,8 + (i-1)*46), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = name, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 14})
-        createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,6)})
+        -- Уменьшены кнопки вкладок
+        local btn = createInstance("TextButton", {Parent = tabsFrame, Size = UDim2.new(1, -8, 0, 30), Position = UDim2.new(0,4,0,6 + (i-1)*36), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = name, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 12})
+        createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,4)})
         UI.tabs[name] = btn
 
-        local page = createInstance("ScrollingFrame", {Parent = contentFrame, Size = UDim2.new(1,-10,1,-10), Position = UDim2.new(0,5,0,5), BackgroundTransparency = 1, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y})
-        createInstance("UIListLayout", {Parent = page}).Padding = UDim.new(0,8)
+        local page = createInstance("ScrollingFrame", {Parent = contentFrame, Size = UDim2.new(1,-6,1,-6), Position = UDim2.new(0,3,0,3), BackgroundTransparency = 1, ScrollBarThickness = 4, AutomaticCanvasSize = Enum.AutomaticSize.Y})
+        createInstance("UIListLayout", {Parent = page}).Padding = UDim.new(0,6)
         page.Visible = false
         UI.pages[name] = page
 
@@ -129,21 +134,24 @@ end
 
 
 local function addLabel(parent, text)
-    return createInstance("TextLabel", {Parent = parent, Size = UDim2.new(1,-10,0,20), BackgroundTransparency = 1, Text = text, TextColor3 = Color3.fromRGB(220,220,220), Font = Enum.Font.Gotham, TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left})
+    -- Уменьшен размер текста
+    return createInstance("TextLabel", {Parent = parent, Size = UDim2.new(1,-6,0,16), BackgroundTransparency = 1, Text = text, TextColor3 = Color3.fromRGB(220,220,220), Font = Enum.Font.Gotham, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left})
 end
 
 local function addButton(parent, text, callback)
-    local btn = createInstance("TextButton", {Parent = parent, Size = UDim2.new(1,-10,0,34), BackgroundColor3 = Color3.fromRGB(70,70,70), Text = text, TextColor3 = Color3.fromRGB(240,240,240), Font = Enum.Font.Gotham, TextSize = 14})
-    createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,6)})
+    -- Уменьшены кнопки
+    local btn = createInstance("TextButton", {Parent = parent, Size = UDim2.new(1,-6,0,26), BackgroundColor3 = Color3.fromRGB(70,70,70), Text = text, TextColor3 = Color3.fromRGB(240,240,240), Font = Enum.Font.Gotham, TextSize = 12})
+    createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,4)})
     btn.MouseButton1Click:Connect(function() pcall(callback) end)
     return btn
 end
 
 local function addToggle(parent, text, callback)
-    local frame = createInstance("Frame", {Parent = parent, Size = UDim2.new(1,-10,0,34), BackgroundColor3 = Color3.fromRGB(40,40,40)})
-    createInstance("UICorner", {Parent = frame, CornerRadius = UDim.new(0,6)})
-    createInstance("TextLabel", {Parent = frame, Text = text, Size = UDim2.new(1,-60,1,0), Position = UDim2.new(0,6,0,0), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 14, TextXAlignment = Enum.TextXAlignment.Left})
-    local btn = createInstance("TextButton", {Parent = frame, Size = UDim2.new(0,48,0,22), Position = UDim2.new(1,-56,0,6), Text = "OFF", BackgroundColor3 = Color3.fromRGB(90,90,90), TextColor3 = Color3.fromRGB(255,255,255), Font = Enum.Font.Gotham, TextSize = 12})
+    -- Уменьшены переключатели
+    local frame = createInstance("Frame", {Parent = parent, Size = UDim2.new(1,-6,0,26), BackgroundColor3 = Color3.fromRGB(40,40,40)})
+    createInstance("UICorner", {Parent = frame, CornerRadius = UDim.new(0,4)})
+    createInstance("TextLabel", {Parent = frame, Text = text, Size = UDim2.new(1,-45,1,0), Position = UDim2.new(0,4,0,0), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left})
+    local btn = createInstance("TextButton", {Parent = frame, Size = UDim2.new(0,38,0,18), Position = UDim2.new(1,-42,0,4), Text = "OFF", BackgroundColor3 = Color3.fromRGB(90,90,90), TextColor3 = Color3.fromRGB(255,255,255), Font = Enum.Font.Gotham, TextSize = 10})
     local state = false
     btn.MouseButton1Click:Connect(function()
         state = not state
@@ -216,12 +224,13 @@ do
     local page = UI.pages["TradeTools"]
     addLabel(page, " ")
 
-    local inputFrame = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-10,0,36), BackgroundColor3 = Color3.fromRGB(40,40,40)})
-    createInstance("UICorner", {Parent = inputFrame, CornerRadius = UDim.new(0,6)})
-    local textBox = createInstance("TextBox", {Parent = inputFrame, Size = UDim2.new(1,-12,1,-8), Position = UDim2.new(0,6,0,4), BackgroundColor3 = Color3.fromRGB(30,30,30), TextColor3 = Color3.fromRGB(230,230,230), PlaceholderText = "Enter trail name...", Font = Enum.Font.Gotham, TextSize = 14, ClearTextOnFocus = false})
+    -- Уменьшен размер элементов торговых инструментов
+    local inputFrame = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,28), BackgroundColor3 = Color3.fromRGB(40,40,40)})
+    createInstance("UICorner", {Parent = inputFrame, CornerRadius = UDim.new(0,4)})
+    local textBox = createInstance("TextBox", {Parent = inputFrame, Size = UDim2.new(1,-8,1,-6), Position = UDim2.new(0,4,0,3), BackgroundColor3 = Color3.fromRGB(30,30,30), TextColor3 = Color3.fromRGB(230,230,230), PlaceholderText = "Enter trail name...", Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false})
 
-    local btnGrid = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-10,0,160), BackgroundTransparency = 1})
-    createInstance("UIGridLayout", {Parent = btnGrid, CellSize = UDim2.new(0.48,0,0,40), CellPadding = UDim2.new(0,8,0,8)})
+    local btnGrid = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,120), BackgroundTransparency = 1})
+    createInstance("UIGridLayout", {Parent = btnGrid, CellSize = UDim2.new(0.48,0,0,30), CellPadding = UDim2.new(0,6,0,6)})
 
     local function safeFire(eventName, param)
         local ev = ReplicatedStorage:FindFirstChild(eventName)
@@ -271,9 +280,10 @@ do
     local page = UI.pages["TradeSpy"]
     addLabel(page, " ")
 
-    local container = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-10,0,320), BackgroundTransparency = 1})
-    local scroll = createInstance("ScrollingFrame", {Parent = container, Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y})
-    createInstance("UIListLayout", {Parent = scroll}).Padding = UDim.new(0,6)
+    -- Уменьшен размер TradeSpy
+    local container = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,240), BackgroundTransparency = 1})
+    local scroll = createInstance("ScrollingFrame", {Parent = container, Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ScrollBarThickness = 4, AutomaticCanvasSize = Enum.AutomaticSize.Y})
+    createInstance("UIListLayout", {Parent = scroll}).Padding = UDim.new(0,4)
 
     local function createSessionUI(session)
         if not session or not session:IsA("Folder") then return end
@@ -282,12 +292,13 @@ do
         local p1Trading = session:FindFirstChild("Player1Trading"); local p2Trading = session:FindFirstChild("Player2Trading")
         if not (p1 and p2 and p1Accept and p2Accept and p1Trading and p2Trading) then return end
 
-        local itemFrame = createInstance("Frame", {Parent = scroll, Size = UDim2.new(1,-10,0,110), BackgroundColor3 = Color3.fromRGB(45,45,45)})
-        createInstance("UICorner", {Parent = itemFrame, CornerRadius = UDim.new(0,6)})
-        createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(1,-10,0,28), Position = UDim2.new(0,5,0,5), BackgroundTransparency = 1, Text = p1.Value .. " ⇄ " .. p2.Value, Font = Enum.Font.GothamBold, TextSize = 16, TextColor3 = Color3.fromRGB(235,235,235)})
-        local statusLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0,90,0,20), Position = UDim2.new(1,-100,0,6), BackgroundTransparency = 1, Text = "", Font = Enum.Font.GothamSemibold, TextSize = 14, TextColor3 = Color3.fromRGB(255,255,255), TextXAlignment = Enum.TextXAlignment.Right})
-        local leftLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0.5,-8,0,64), Position = UDim2.new(0,6,0,36), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = "", Font = Enum.Font.Gotham, TextSize = 13, TextColor3 = Color3.fromRGB(220,220,220), TextXAlignment = Enum.TextXAlignment.Left})
-        local rightLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0.5,-8,0,64), Position = UDim2.new(0.5,2,0,36), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = "", Font = Enum.Font.Gotham, TextSize = 13, TextColor3 = Color3.fromRGB(220,220,220), TextXAlignment = Enum.TextXAlignment.Left})
+        -- Уменьшен размер элементов сессий
+        local itemFrame = createInstance("Frame", {Parent = scroll, Size = UDim2.new(1,-6,0,80), BackgroundColor3 = Color3.fromRGB(45,45,45)})
+        createInstance("UICorner", {Parent = itemFrame, CornerRadius = UDim.new(0,4)})
+        createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(1,-6,0,22), Position = UDim2.new(0,3,0,3), BackgroundTransparency = 1, Text = p1.Value .. " ⇄ " .. p2.Value, Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = Color3.fromRGB(235,235,235)})
+        local statusLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0,70,0,16), Position = UDim2.new(1,-75,0,4), BackgroundTransparency = 1, Text = "", Font = Enum.Font.GothamSemibold, TextSize = 12, TextColor3 = Color3.fromRGB(255,255,255), TextXAlignment = Enum.TextXAlignment.Right})
+        local leftLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0.5,-6,0,48), Position = UDim2.new(0,3,0,28), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = "", Font = Enum.Font.Gotham, TextSize = 11, TextColor3 = Color3.fromRGB(220,220,220), TextXAlignment = Enum.TextXAlignment.Left})
+        local rightLabel = createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(0.5,-6,0,48), Position = UDim2.new(0.5,3,0,28), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = "", Font = Enum.Font.Gotham, TextSize = 11, TextColor3 = Color3.fromRGB(220,220,220), TextXAlignment = Enum.TextXAlignment.Left})
 
         local function updateState()
             local acceptedCount = (p1Accept.Value and 1 or 0) + (p2Accept.Value and 1 or 0)
@@ -363,13 +374,14 @@ do
     local page = UI.pages["InventoryViewer"]
     addLabel(page, " ")
 
-    local viewer = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-10,0,260), BackgroundColor3 = Color3.fromRGB(35,35,35)})
-    createInstance("UICorner", {Parent = viewer, CornerRadius = UDim.new(0,6)})
+    -- Уменьшен размер просмотра инвентаря
+    local viewer = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,200), BackgroundColor3 = Color3.fromRGB(35,35,35)})
+    createInstance("UICorner", {Parent = viewer, CornerRadius = UDim.new(0,4)})
 
-    local playersList = createInstance("ScrollingFrame", {Parent = viewer, Size = UDim2.new(0,180,1,-20), Position = UDim2.new(0,10,0,10), BackgroundTransparency = 1, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y})
-    createInstance("UIListLayout", {Parent = playersList}).Padding = UDim.new(0,4)
-    local trailsList = createInstance("ScrollingFrame", {Parent = viewer, Size = UDim2.new(1,-220,1,-20), Position = UDim2.new(0,200,0,10), BackgroundTransparency = 1, ScrollBarThickness = 6, AutomaticCanvasSize = Enum.AutomaticSize.Y})
-    createInstance("UIListLayout", {Parent = trailsList}).Padding = UDim.new(0,4)
+    local playersList = createInstance("ScrollingFrame", {Parent = viewer, Size = UDim2.new(0,140,1,-8), Position = UDim2.new(0,6,0,6), BackgroundTransparency = 1, ScrollBarThickness = 4, AutomaticCanvasSize = Enum.AutomaticSize.Y})
+    createInstance("UIListLayout", {Parent = playersList}).Padding = UDim.new(0,3)
+    local trailsList = createInstance("ScrollingFrame", {Parent = viewer, Size = UDim2.new(1,-156,1,-8), Position = UDim2.new(0,146,0,6), BackgroundTransparency = 1, ScrollBarThickness = 4, AutomaticCanvasSize = Enum.AutomaticSize.Y})
+    createInstance("UIListLayout", {Parent = trailsList}).Padding = UDim.new(0,3)
 
     local currentPlayer = nil
     local trailConnections = {}
@@ -401,12 +413,12 @@ do
                 for _, it in ipairs(trails:GetChildren()) do
                     local trailLabel = createInstance("TextLabel", {
                         Parent = trailsList, 
-                        Size = UDim2.new(1,-8,0,20), 
+                        Size = UDim2.new(1,-4,0,16), 
                         Text = it.Name, 
                         BackgroundColor3 = Color3.fromRGB(45,45,45), 
                         TextColor3 = Color3.fromRGB(230,230,230), 
                         Font = Enum.Font.Gotham, 
-                        TextSize = 13, 
+                        TextSize = 11, 
                         TextXAlignment = Enum.TextXAlignment.Left
                     })
                 end
@@ -414,12 +426,12 @@ do
                 if #trails:GetChildren() == 0 then
                     createInstance("TextLabel", {
                         Parent = trailsList, 
-                        Size = UDim2.new(1,-8,0,20), 
+                        Size = UDim2.new(1,-4,0,16), 
                         Text = "No trails", 
                         BackgroundColor3 = Color3.fromRGB(45,45,45), 
                         TextColor3 = Color3.fromRGB(200,200,200), 
                         Font = Enum.Font.Gotham, 
-                        TextSize = 13
+                        TextSize = 11
                     })
                 end
             end
@@ -438,12 +450,12 @@ do
         else
             createInstance("TextLabel", {
                 Parent = trailsList, 
-                Size = UDim2.new(1,-8,0,20), 
+                Size = UDim2.new(1,-4,0,16), 
                 Text = "No trails folder", 
                 BackgroundColor3 = Color3.fromRGB(45,45,45), 
                 TextColor3 = Color3.fromRGB(200,200,200), 
                 Font = Enum.Font.Gotham, 
-                TextSize = 13
+                TextSize = 11
             })
         end
     end
@@ -456,12 +468,12 @@ do
         for _, pl in ipairs(Players:GetPlayers()) do
             local btn = createInstance("TextButton", {
                 Parent = playersList, 
-                Size = UDim2.new(1,-8,0,26), 
+                Size = UDim2.new(1,-4,0,22), 
                 Text = pl.Name, 
                 BackgroundColor3 = Color3.fromRGB(50,50,50), 
                 TextColor3 = Color3.fromRGB(230,230,230), 
                 Font = Enum.Font.Gotham, 
-                TextSize = 14
+                TextSize = 12
             })
             
             btn.MouseButton1Click:Connect(function()
@@ -612,7 +624,8 @@ do
 end
 
 do
-    local status = createInstance("TextLabel", {Parent = UI.mainFrame, Size = UDim2.new(0,200,0,20), Position = UDim2.new(0,8,1,-28), BackgroundTransparency = 1, Text = "Farms: 0 running", TextColor3 = Color3.fromRGB(200,200,200), Font = Enum.Font.Gotham, TextSize = 12})
+    -- Уменьшен статус бар
+    local status = createInstance("TextLabel", {Parent = UI.mainFrame, Size = UDim2.new(0,160,0,16), Position = UDim2.new(0,6,1,-22), BackgroundTransparency = 1, Text = "Farms: 0 running", TextColor3 = Color3.fromRGB(200,200,200), Font = Enum.Font.Gotham, TextSize = 10})
     task.spawn(function()
         while true do
             task.wait(0.8)
