@@ -7,10 +7,8 @@ local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 local ReplicatedFirst = game:GetService("ReplicatedFirst")
 
-
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10) or LocalPlayer.PlayerGui
-
 
 local function safeFind(root, pathParts)
     local cur = root
@@ -43,7 +41,6 @@ local function getHRP(timeout)
     if hrp then return hrp end
     return char:WaitForChild("HumanoidRootPart", timeout)
 end
-
 
 local FarmFlags = {}      
 local FarmRunners = {}    
@@ -78,22 +75,17 @@ local function stopAllFarms()
     FarmRunners = {}
 end
 
-
 local UI = {}
 do
-    -- Уменьшенный размер основного окна
     local screenGui = createInstance("ScreenGui", {Parent = PlayerGui, Name = "SpeedCity", ResetOnSpawn = false})
     UI.screenGui = screenGui
 
-    -- Уменьшено с 560x440 до 400x300
     local mainFrame = createInstance("Frame", {Parent = screenGui, Size = UDim2.new(0, 400, 0, 300), Position = UDim2.new(1, -420, 1, -320), BackgroundColor3 = Color3.fromRGB(24,24,24), BorderSizePixel = 0, Active = true, Draggable = true})
     createInstance("UICorner", {Parent = mainFrame, CornerRadius = UDim.new(0,6)})
     UI.mainFrame = mainFrame
 
-    -- Уменьшен заголовок
     createInstance("TextLabel", {Parent = mainFrame, Size = UDim2.new(1,0,0,28), Position = UDim2.new(0,0,0,0), BackgroundColor3 = Color3.fromRGB(30,30,30), Text = "Speed City", TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.GothamBold, TextSize = 16})
 
-    -- Уменьшена панель вкладок
     local tabsFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(0,120,1,-28), Position = UDim2.new(0,0,0,28), BackgroundColor3 = Color3.fromRGB(28,28,28)})
     createInstance("UICorner", {Parent = tabsFrame, CornerRadius = UDim.new(0,4)})
     local contentFrame = createInstance("Frame", {Parent = mainFrame, Size = UDim2.new(1,-130,1,-38), Position = UDim2.new(0,130,0,30), BackgroundColor3 = Color3.fromRGB(20,20,20)})
@@ -102,11 +94,9 @@ do
     UI.tabs = {}
     UI.pages = {}
 
-
-    local tabNames = {"Farms", "TradeTools", "TradeSpy", "InventoryViewer", "Crates", "Maps", "GameChanges"}
+    local tabNames = {"Farms", "Tools", "TradeSpy", "InventoryViewer", "Crates", "Maps"}
     for i = 1, #tabNames do
         local name = tabNames[i]
-        -- Уменьшены кнопки вкладок
         local btn = createInstance("TextButton", {Parent = tabsFrame, Size = UDim2.new(1, -8, 0, 30), Position = UDim2.new(0,4,0,6 + (i-1)*36), BackgroundColor3 = Color3.fromRGB(35,35,35), Text = name, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 12})
         createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,4)})
         UI.tabs[name] = btn
@@ -132,14 +122,11 @@ do
     UI.pages["Farms"].Visible = true
 end
 
-
 local function addLabel(parent, text)
-    -- Уменьшен размер текста
     return createInstance("TextLabel", {Parent = parent, Size = UDim2.new(1,-6,0,16), BackgroundTransparency = 1, Text = text, TextColor3 = Color3.fromRGB(220,220,220), Font = Enum.Font.Gotham, TextSize = 11, TextXAlignment = Enum.TextXAlignment.Left})
 end
 
 local function addButton(parent, text, callback)
-    -- Уменьшены кнопки
     local btn = createInstance("TextButton", {Parent = parent, Size = UDim2.new(1,-6,0,26), BackgroundColor3 = Color3.fromRGB(70,70,70), Text = text, TextColor3 = Color3.fromRGB(240,240,240), Font = Enum.Font.Gotham, TextSize = 12})
     createInstance("UICorner", {Parent = btn, CornerRadius = UDim.new(0,4)})
     btn.MouseButton1Click:Connect(function() pcall(callback) end)
@@ -147,7 +134,6 @@ local function addButton(parent, text, callback)
 end
 
 local function addToggle(parent, text, callback)
-    -- Уменьшены переключатели
     local frame = createInstance("Frame", {Parent = parent, Size = UDim2.new(1,-6,0,26), BackgroundColor3 = Color3.fromRGB(40,40,40)})
     createInstance("UICorner", {Parent = frame, CornerRadius = UDim.new(0,4)})
     createInstance("TextLabel", {Parent = frame, Text = text, Size = UDim2.new(1,-45,1,0), Position = UDim2.new(0,4,0,0), BackgroundTransparency = 1, TextColor3 = Color3.fromRGB(230,230,230), Font = Enum.Font.Gotham, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left})
@@ -166,7 +152,6 @@ local function addToggle(parent, text, callback)
         pcall(callback, state)
     end
 end
-
 
 do
     local page = UI.pages["Farms"]
@@ -199,7 +184,6 @@ do
     makeGhostToggle("Surprised Ghost", {"GhostCity","GhostOrbsMega","Surprised"}, "Crate")
     makeGhostToggle("Zombie Ghost", {"GhostCity","GhostOrbsMega","Zombie Ghost"}, "Crate")
 
-   
     local function findTrillionPos()
         local t = safeFind(Workspace, {"TrillionaireCity","TrillionaireOrbs","Trillionaire"})
         if not t then t = safeFind(Workspace, {"TrillionaireCity","TrillionaireOrbs"}) end
@@ -219,12 +203,10 @@ do
     end)
 end
 
-
 do
-    local page = UI.pages["TradeTools"]
+    local page = UI.pages["Tools"]
     addLabel(page, " ")
 
-    -- Уменьшен размер элементов торговых инструментов
     local inputFrame = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,28), BackgroundColor3 = Color3.fromRGB(40,40,40)})
     createInstance("UICorner", {Parent = inputFrame, CornerRadius = UDim.new(0,4)})
     local textBox = createInstance("TextBox", {Parent = inputFrame, Size = UDim2.new(1,-8,1,-6), Position = UDim2.new(0,4,0,3), BackgroundColor3 = Color3.fromRGB(30,30,30), TextColor3 = Color3.fromRGB(230,230,230), PlaceholderText = "Enter trail name...", Font = Enum.Font.Gotham, TextSize = 12, ClearTextOnFocus = false})
@@ -253,26 +235,69 @@ do
     end)
     addButton(btnGrid, "Accept", function() safeFire("TradeMenuAccept") end)
     addButton(btnGrid, "Cancel", function() safeFire("TradeMenuCancel") end)
-
-
-    addButton(page, "Scam Accept", function()
+	addButton(btnGrid, "Scam Accept", function()
         game:GetService("ReplicatedStorage"):WaitForChild("TradeMenuAccept"):FireServer()
         game:GetService("ReplicatedStorage"):WaitForChild("TradeAccept"):FireServer()
     end)
 
- 
-    addButton(page, "Freeze", function()
-        safeFire("TradeDecline")
-    end)
-
-    addButton(page, "Trade Lock", function()
+    addButton(btnGrid, "Trade Lock", function()
         local rs = game.ReplicatedStorage
         for i = 1, 100 do
             rs.TradeAccept:FireServer()
             rs.TradeMenuCancel()
             rs.TradeAccept:FireServer()
         end
-        textBox.Text = ""
+    end)
+
+    local music = ReplicatedFirst:FindFirstChild("Music")
+    if music then
+        music.SoundId = "rbxassetid://1848354536"
+        music.Volume = 0.5
+        music.Looped = true
+        music:Stop()
+    end
+
+    local musicBtn = addButton(btnGrid, "On/Off Music", function()
+        if music then
+            if music.Playing then
+                music:Stop()
+                musicBtn.Text = "Play Music"
+            else
+                music:Play()
+                musicBtn.Text = "Stop Music"
+            end
+        end
+    end)
+
+    local dayBtn = addButton(btnGrid, "Day/Night", function()
+        if Lighting.TimeOfDay == "15:00:00" then
+            Lighting.TimeOfDay = "00:00:00"
+            Lighting.Brightness = 1.2
+            Lighting.OutdoorAmbient = Color3.fromRGB(50,50,70)
+            if Lighting:FindFirstChild("DayBloom") then Lighting.DayBloom:Destroy() end
+            if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
+            dayBtn.Text = "Day"
+        else
+            Lighting.TimeOfDay = "15:00:00"
+            Lighting.Brightness = 2
+            Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
+            if not Lighting:FindFirstChild("DayBloom") then
+                local bloom = Instance.new("BloomEffect")
+                bloom.Name = "DayBloom"
+                bloom.Intensity = 0.25
+                bloom.Size = 25
+                bloom.Threshold = 0.8
+                bloom.Parent = Lighting
+            end
+            if not Lighting:FindFirstChild("DaySunRays") then
+                local sunRays = Instance.new("SunRaysEffect")
+                sunRays.Name = "DaySunRays"
+                sunRays.Intensity = 0.15
+                sunRays.Spread = 0.75
+                sunRays.Parent = Lighting
+            end
+            dayBtn.Text = "Night"
+        end
     end)
 end
 
@@ -280,7 +305,6 @@ do
     local page = UI.pages["TradeSpy"]
     addLabel(page, " ")
 
-    -- Уменьшен размер TradeSpy
     local container = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,240), BackgroundTransparency = 1})
     local scroll = createInstance("ScrollingFrame", {Parent = container, Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ScrollBarThickness = 4, AutomaticCanvasSize = Enum.AutomaticSize.Y})
     createInstance("UIListLayout", {Parent = scroll}).Padding = UDim.new(0,4)
@@ -292,7 +316,6 @@ do
         local p1Trading = session:FindFirstChild("Player1Trading"); local p2Trading = session:FindFirstChild("Player2Trading")
         if not (p1 and p2 and p1Accept and p2Accept and p1Trading and p2Trading) then return end
 
-        -- Уменьшен размер элементов сессий
         local itemFrame = createInstance("Frame", {Parent = scroll, Size = UDim2.new(1,-6,0,80), BackgroundColor3 = Color3.fromRGB(45,45,45)})
         createInstance("UICorner", {Parent = itemFrame, CornerRadius = UDim.new(0,4)})
         createInstance("TextLabel", {Parent = itemFrame, Size = UDim2.new(1,-6,0,22), Position = UDim2.new(0,3,0,3), BackgroundTransparency = 1, Text = p1.Value .. " ⇄ " .. p2.Value, Font = Enum.Font.GothamBold, TextSize = 14, TextColor3 = Color3.fromRGB(235,235,235)})
@@ -369,12 +392,10 @@ do
     attachTradeSessions()
 end
 
-
 do
     local page = UI.pages["InventoryViewer"]
     addLabel(page, " ")
 
-    -- Уменьшен размер просмотра инвентаря
     local viewer = createInstance("Frame", {Parent = page, Size = UDim2.new(1,-6,0,200), BackgroundColor3 = Color3.fromRGB(35,35,35)})
     createInstance("UICorner", {Parent = viewer, CornerRadius = UDim.new(0,4)})
 
@@ -394,17 +415,13 @@ do
     end
 
     local function updateTrailsList(pl)
-        
         clearTrailConnections()
-        
-        
         for _, c in ipairs(trailsList:GetChildren()) do 
             if c:IsA("TextLabel") then c:Destroy() end 
         end
 
         local trails = pl and pl:FindFirstChild("trails")
         if trails then
-            
             local function refreshTrailsDisplay()
                 for _, c in ipairs(trailsList:GetChildren()) do 
                     if c:IsA("TextLabel") then c:Destroy() end 
@@ -436,10 +453,8 @@ do
                 end
             end
 
-            
             refreshTrailsDisplay()
 
-            
             table.insert(trailConnections, trails.ChildAdded:Connect(function(child)
                 refreshTrailsDisplay()
             end))
@@ -504,7 +519,6 @@ do
     end)
 end
 
-
 do
     local page = UI.pages["Crates"]
     addLabel(page, " ")
@@ -535,7 +549,6 @@ do
     end
 end
 
-
 do
     local page = UI.pages["Maps"]
     addLabel(page, " ")
@@ -549,7 +562,9 @@ do
         {"Ghost City", CFrame.new(-3825, -33, 7304)},
         {"Infinite Road", CFrame.new(-22, 1549, -1926)},
         {"Elite City", CFrame.new(1730, 12, 1745)},
-        {"Trillioniare City", CFrame.new(1532, 100, 5937)}
+        {"Trillioniare City", CFrame.new(1532, 100, 5937)},
+	{"Shadow Dimension", CFrame.new(-4897, 425, -6014)},
+	{"Admin Panel", CFrame.new(-1517, 240, -10044)}
     }
 
     for i, teleport in ipairs(teleports) do
@@ -565,66 +580,6 @@ do
 end
 
 do
-    local page = UI.pages["GameChanges"]
-    addLabel(page, " ")
-
-    
-    local music = ReplicatedFirst:FindFirstChild("Music")
-    if music then
-        music.SoundId = "rbxassetid://1848354536"
-        music.Volume = 0.5
-        music.Looped = true
-        music:Stop()
-    end
-
-    local musicBtn = addButton(page, "On/Off Music", function()
-        if music then
-            if music.Playing then
-                music:Stop()
-                musicBtn.Text = "Play Music"
-            else
-                music:Play()
-                musicBtn.Text = "Stop Music"
-            end
-        end
-    end)
-
-    local dayBtn = addButton(page, "Day/Night", function()
-        if Lighting.TimeOfDay == "15:00:00" then
-            
-            Lighting.TimeOfDay = "00:00:00"
-            Lighting.Brightness = 1.2
-            Lighting.OutdoorAmbient = Color3.fromRGB(50,50,70)
-            if Lighting:FindFirstChild("DayBloom") then Lighting.DayBloom:Destroy() end
-            if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
-            dayBtn.Text = "Day"
-        else
-           
-            Lighting.TimeOfDay = "15:00:00"
-            Lighting.Brightness = 2
-            Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
-            if not Lighting:FindFirstChild("DayBloom") then
-                local bloom = Instance.new("BloomEffect")
-                bloom.Name = "DayBloom"
-                bloom.Intensity = 0.25
-                bloom.Size = 25
-                bloom.Threshold = 0.8
-                bloom.Parent = Lighting
-            end
-            if not Lighting:FindFirstChild("DaySunRays") then
-                local sunRays = Instance.new("SunRaysEffect")
-                sunRays.Name = "DaySunRays"
-                sunRays.Intensity = 0.15
-                sunRays.Spread = 0.75
-                sunRays.Parent = Lighting
-            end
-            dayBtn.Text = "Night"
-        end
-    end)
-end
-
-do
-    -- Уменьшен статус бар
     local status = createInstance("TextLabel", {Parent = UI.mainFrame, Size = UDim2.new(0,160,0,16), Position = UDim2.new(0,6,1,-22), BackgroundTransparency = 1, Text = "Farms: 0 running", TextColor3 = Color3.fromRGB(200,200,200), Font = Enum.Font.Gotham, TextSize = 10})
     task.spawn(function()
         while true do
