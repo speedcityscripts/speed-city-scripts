@@ -113,6 +113,6 @@ while task.wait() do
     
     currentCrateIndex = currentCrateIndex + 1
     if currentCrateIndex > #crateTypes then
-        currentCrateIndex = 1  -- Loop back to the beginning
+        currentCrateIndex = 1
     end
 end
