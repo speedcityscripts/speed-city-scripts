@@ -248,57 +248,6 @@ do
             rs.TradeAccept:FireServer()
         end
     end)
-
-    local music = ReplicatedFirst:FindFirstChild("Music")
-    if music then
-        music.SoundId = "rbxassetid://1848354536"
-        music.Volume = 0.5
-        music.Looped = true
-        music:Stop()
-    end
-
-    local musicBtn = addButton(btnGrid, "On/Off Music", function()
-        if music then
-            if music.Playing then
-                music:Stop()
-                musicBtn.Text = "Play Music"
-            else
-                music:Play()
-                musicBtn.Text = "Stop Music"
-            end
-        end
-    end)
-
-    local dayBtn = addButton(btnGrid, "Day/Night", function()
-        if Lighting.TimeOfDay == "15:00:00" then
-            Lighting.TimeOfDay = "00:00:00"
-            Lighting.Brightness = 1.2
-            Lighting.OutdoorAmbient = Color3.fromRGB(50,50,70)
-            if Lighting:FindFirstChild("DayBloom") then Lighting.DayBloom:Destroy() end
-            if Lighting:FindFirstChild("DaySunRays") then Lighting.DaySunRays:Destroy() end
-            dayBtn.Text = "Day"
-        else
-            Lighting.TimeOfDay = "15:00:00"
-            Lighting.Brightness = 2
-            Lighting.OutdoorAmbient = Color3.fromRGB(180,180,180)
-            if not Lighting:FindFirstChild("DayBloom") then
-                local bloom = Instance.new("BloomEffect")
-                bloom.Name = "DayBloom"
-                bloom.Intensity = 0.25
-                bloom.Size = 25
-                bloom.Threshold = 0.8
-                bloom.Parent = Lighting
-            end
-            if not Lighting:FindFirstChild("DaySunRays") then
-                local sunRays = Instance.new("SunRaysEffect")
-                sunRays.Name = "DaySunRays"
-                sunRays.Intensity = 0.15
-                sunRays.Spread = 0.75
-                sunRays.Parent = Lighting
-            end
-            dayBtn.Text = "Night"
-        end
-    end)
 end
 
 do
@@ -536,10 +485,10 @@ do
         "Cloud Crate",
         "Ocean Crate",
         "Best Crate",
-	"very op crate",
-	"not free crate",
-	"H4110w33n",
-	"Christmas Present"
+		"very op crate",
+		"not free crate",
+		"H4110w33n",
+		"Christmas Present"
     }
 
     for i, crateName in ipairs(crates) do
@@ -563,8 +512,8 @@ do
         {"Infinite Road", CFrame.new(-22, 1549, -1926)},
         {"Elite City", CFrame.new(1730, 12, 1745)},
         {"Trillioniare City", CFrame.new(1532, 100, 5937)},
-	{"Shadow Dimension", CFrame.new(-4897, 425, -6014)},
-	{"Admin Panel", CFrame.new(-1517, 240, -10044)}
+		{"Shadow Dimension", CFrame.new(-4897, 425, -6014)},
+		{"Admin Panel", CFrame.new(-1517, 240, -10044)}
     }
 
     for i, teleport in ipairs(teleports) do
