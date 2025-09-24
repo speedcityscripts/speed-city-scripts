@@ -13,9 +13,6 @@ if crateScript then
 end
 
 local ptrails = {
-    ["Elf"] = true,
-    ["Reindeer"] = true,
-    ["Santa"] = true,
     ["Present"] = true,
     ["Stocking"] = true,
     ["Hot Chocolate"] = true,
@@ -36,7 +33,6 @@ screenCrateEvent:Connect(function(trailName)
 end)
 
 local crateTypes = {
-    "Elf Crate",
     "Christmas Crate"
 }
 
